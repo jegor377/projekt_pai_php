@@ -1,4 +1,5 @@
 <?php
+require_once("lib/header.php");
 require_once("lib/auth.php");
 
 if(isset($_POST["email"]) && isset($_POST["password"])) {
