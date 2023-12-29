@@ -1,0 +1,23 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: var(--dark-color);
+}
+
+.navbar-brand {
+  text-decoration: none;
+  color: var(--light-color);
+}
+
+.navbar-options {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.navbar-option {
+  text-decoration: none;
+  color: var(--light-color);
+}

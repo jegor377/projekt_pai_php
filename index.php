@@ -1,11 +1,13 @@
 <?php
-	if (!empty($_SERVER['HTTPS']) && ('on' == $_SERVER['HTTPS'])) {
-		$uri = 'https://';
-	} else {
-		$uri = 'http://';
-	}
-	$uri .= $_SERVER['HTTP_HOST'];
-	header('Location: '.$uri.'/dashboard/');
-	exit;
+$title = "Strona główna";
+require_once("templates/header.php");
+
+if (!is_writable(session_save_path())) {
+	echo 'Session path "'.session_save_path().'" is not writable for PHP!'; 
+}
 ?>
-Something is wrong with the XAMPP installation :-(
+
+<h1>Hej</h1>
+
+<?php
+require_once("templates/footer.php");

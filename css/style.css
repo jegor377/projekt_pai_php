@@ -1,0 +1,9 @@
+:root {
+  --dark-color: #222;
+  --light-color: #eee;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
