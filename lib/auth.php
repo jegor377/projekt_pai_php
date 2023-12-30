@@ -1,5 +1,10 @@
 <?php
-require_once("db.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/db.php");
+
+enum AuthError: int {
+  case UserNotFound = 0;
+  case UserInactive = 1;
+}
 
 class Auth {
   public static function hash_password($password) {
@@ -11,9 +16,9 @@ class Auth {
   }
   
   public static function authenticate($email, $password) {
-    $db = new Db();
-    $db->init();
-    $user = $db->get_user($email);
+    $user = Db::get_user($email);
+    if($user === null) throw new Exception("User not found", AuthError::UserNotFound->value);
+    if(!$user['is_active']) throw new Exception('User is inactive', AuthError::UserInactive->value);
     if(password_verify($password, $user['password_hash'])) {
       return $user;
     }

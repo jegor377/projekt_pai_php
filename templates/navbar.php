@@ -10,11 +10,13 @@
     <?php
       if(isset($user)) {
         ?>
-        <a href="#" class="navbar-option">Wyloguj</a>
+        <span>Witaj <?= $user['name'] ?></span>
+        <a href="#" class="navbar-option" id="logout_btn">Wyloguj</a>
         <?php
       } else {
         ?>
         <a href="login.php" class="navbar-option">Zaloguj</a>
+        <a href="register.php" class="navbar-option">Zarejestruj się</a>
         <?php
       }
     ?>

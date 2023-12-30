@@ -1,16 +1,27 @@
 <?php
-require_once("lib/header.php");
-require_once("lib/auth.php");
+session_start();
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/auth.php");
 
 if(isset($_POST["email"]) && isset($_POST["password"])) {
   $email = $_POST["email"];
   $password = $_POST["password"];
   
-  $user = Auth::authenticate($email, $password);
-  if($user) {
-    $_SESSION['user'] = "abc";
-  } else {
-    $error_msg = "Niepoprawne dane logowania";
+  try {
+    $user = Auth::authenticate($email, $password);
+    if($user) {
+      $_SESSION['user'] = $user;
+    } else {
+      $error_msg = "Niepoprawne dane logowania";
+    }
+  } catch (Exception $e) {
+    switch($e->getCode()) {
+      case AuthError::UserNotFound->value: {
+        $error_msg = "Nie ma takiego użytkownika";
+      } break;
+      case AuthError::UserInactive->value: {
+        $error_msg = "Użytkownik nie został aktywowany";
+      } break;
+    }
   }
 }
 

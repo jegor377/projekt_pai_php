@@ -1,5 +1,6 @@
 <?php
-require_once("lib/header.php");
+session_start();
+
 $title = "Strona główna";
 require_once("templates/header.php");
 ?>
