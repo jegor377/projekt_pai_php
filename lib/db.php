@@ -13,7 +13,8 @@ enum RegisterError: int {
   case TrainerIdMissing = 7;
   case PasswordsDontMatch = 8;
   case NameMissing = 9;
-  case Other = 10;
+  case UserExists = 10;
+  case Other = 11;
 }
 
 class RegisterException extends Exception {
@@ -47,6 +48,9 @@ class Db {
 
     if(strlen($email) > MAX_EMAIL_LEN) throw new RegisterException("Email is too long", RegisterError::EmailTooLong->value);
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new RegisterException("Email format is incorrect", RegisterError::EmailFormatIncorrect->value);
+
+    $existing_user = self::get_user($user["email"]);
+    if($existing_user !== null) throw new RegisterException("User already exists", RegisterError::UserExists->value);
 
     $password = $user["password"] ?? throw new RegisterException("Password is missing", RegisterError::PasswordMissing->value);
     $password_verify = $user["password_verify"] ?? throw new RegisterException("Password verify is missing", RegisterError::PasswordVerifyMissing->value);

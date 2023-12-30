@@ -16,13 +16,13 @@ switch($_SERVER['REQUEST_METHOD']) {
       http_response_code(400);
       echo json_encode([
         'msg' => $e->getMessage(),
-        'error' => $e->getCode()
+        'code' => $e->getCode()
       ]);
     } catch(Exception $e) {
       http_response_code(400);
       echo json_encode([
         'msg' => "Cannot register user",
-        'error' => RegisterError::Other->value
+        'code' => RegisterError::Other->value
       ]);
     }
   } break;

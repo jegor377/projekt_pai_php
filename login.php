@@ -18,9 +18,6 @@ if(isset($_POST["email"]) && isset($_POST["password"])) {
       case AuthError::UserNotFound->value: {
         $error_msg = "Nie ma takiego użytkownika";
       } break;
-      case AuthError::UserInactive->value: {
-        $error_msg = "Użytkownik nie został aktywowany";
-      } break;
     }
   }
 }
@@ -30,6 +27,13 @@ require_once("templates/header.php");
 ?>
 
 <main class="container">
+  <?php
+    if(isset($_GET['msg'])) {
+      ?>
+        <p><?= htmlspecialchars($_GET['msg'], ENT_QUOTES); ?></p>
+      <?php
+    }
+  ?>
   <form action="/login.php" method="POST">
     <div>
       <label for="email">Email</label>

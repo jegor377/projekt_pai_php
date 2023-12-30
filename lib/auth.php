@@ -3,7 +3,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/db.php");
 
 enum AuthError: int {
   case UserNotFound = 0;
-  case UserInactive = 1;
 }
 
 class Auth {
@@ -18,7 +17,6 @@ class Auth {
   public static function authenticate($email, $password) {
     $user = Db::get_user($email);
     if($user === null) throw new Exception("User not found", AuthError::UserNotFound->value);
-    if(!$user['is_active']) throw new Exception('User is inactive', AuthError::UserInactive->value);
     if(password_verify($password, $user['password_hash'])) {
       return $user;
     }

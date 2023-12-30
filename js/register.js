@@ -26,17 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 
   form.addEventListener("submit", e => {
-    e.preventDefault();
     if(password.value != password_verify.value) {
       password_verify.setCustomValidity("Hasła nie są takie same");
       password_verify.reportValidity();
+      e.preventDefault();
       return;
     }
-
-    register(form);
   })
 })
-
-async function register(formData) {
-  
-}
