@@ -10,6 +10,8 @@ if(isset($_POST["email"]) && isset($_POST["password"])) {
     $user = Auth::authenticate($email, $password);
     if($user) {
       $_SESSION['user'] = $user;
+      header("Location: /panel.php");
+      die();
     } else {
       $error_msg = "Niepoprawne dane logowania";
     }

@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 15px;
+  align-items: center;
+  padding: 0px 15px;
+  line-height: 60px;
   background-color: var(--dark-color);
 }
 
@@ -14,10 +16,35 @@
 .navbar-options {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
 }
 
 .navbar-option {
   text-decoration: none;
   color: var(--light-color);
+}
+
+.user-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  height: 100%;
+  padding: 0px 10px;
+}
+
+.user-btn img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.user-btn span {
+  color: var(--light-color);
+}
+
+.user-btn span:hover {
+  cursor: default;
 }
