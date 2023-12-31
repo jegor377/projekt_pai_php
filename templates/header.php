@@ -13,6 +13,12 @@
 
     <link rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/navbar.css"/>
+
+    <?php if(isset($css_files)): ?>
+      <?php foreach($css_files as $css_file): ?>
+        <link rel="stylesheet" href="<?= $css_file ?>"/>
+      <?php endforeach; ?>
+    <?php endif; ?>
   </head>
   <body>
     <?php require_once("navbar.php"); ?>

@@ -2,24 +2,11 @@
 session_start();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/db.php");
+require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/input.php");
 
 function fail() {
   global $error_msg;
   $error_msg = "Wystąpił błąd!";
-}
-
-function to_val($val) {
-  if(isset($val) && $val !== null) {
-    return 'value="' . htmlspecialchars($val, ENT_QUOTES) . '"';
-  }
-  return "";
-}
-
-function selected($curr, $val) {
-  if(isset($curr) && $curr !== null && $curr == $val) {
-    return "selected";
-  }
-  return "";
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -64,6 +51,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
       case RegisterError::UserExists->value: {
         $error_msg = "Użytkownik o podanym emailu już istnieje!";
       } break;
+      case RegisterError::NameTooLong->value: {
+        $error_msg = "Imię i nazwisko zbyt długie!";
+      } break;
       case RegisterError::Other->value: {
         fail();
       } break;
@@ -84,19 +74,19 @@ require_once("templates/header.php");
 <main>
   <form id="register_form" action="/register.php" method="POST">
     <div>
-      <label>Imię i nazwisko</label>
+      <label for="name">Imię i nazwisko</label>
       <input name="name" id="name" type="name" required maxlength="256" <?= to_val($_POST['name'] ?? null) ?>/>
     </div>
     <div>
-      <label>Email</label>
+      <label for="email">Email</label>
       <input name="email" id="email" type="email" required maxlength="100" <?= to_val($_POST['email'] ?? null) ?>/>
     </div>
     <div>
-      <label>Hasło</label>
+      <label for="password">Hasło</label>
       <input name="password" id="password" type="password" required <?= to_val($_POST['password'] ?? null) ?>/>
     </div>
     <div>
-      <label>Powtórz hasło</label>
+      <label for="password_verify">Powtórz hasło</label>
       <input name="password_verify" id="password_verify" type="password" required <?= to_val($_POST['password_verify'] ?? null) ?>/>
     </div>
 

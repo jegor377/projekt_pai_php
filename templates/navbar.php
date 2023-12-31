@@ -1,4 +1,6 @@
 <?php
+  require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/avatar.php");
+
   if(isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
   }
@@ -9,10 +11,7 @@
   <nav class="navbar-options">
     <?php if(isset($user)): ?>
       <div class="user-btn">
-        <?php
-          $avatar_url = "/images/avatar.webp";
-        ?>
-        <img src="<?= $avatar_url ?>"/>
+        <img src="<?= get_avatar_url($user); ?>"/>
         <span>Witaj, <?= $user['name'] ?></span>
       </div>
       <a href="panel.php" class="navbar-option">Panel</a>

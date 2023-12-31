@@ -14,7 +14,8 @@ enum RegisterError: int {
   case PasswordsDontMatch = 8;
   case NameMissing = 9;
   case UserExists = 10;
-  case Other = 11;
+  case NameTooLong = 11;
+  case Other = 12;
 }
 
 class RegisterException extends Exception {
@@ -64,6 +65,7 @@ class Db {
     $trainer_id = $user["trainer_id"] ?? ($user["role"] === 'sportsman' ? throw new RegisterException("Trainer id is missing", RegisterError::TrainerIdMissing->value) : null);
 
     $name = $user["name"] ?? throw new RegisterException("Name is missing", RegisterError::NameMissing->value);
+    if(strlen($name) > 256) throw new RegisterException("Name is too long", RegisterError::NameTooLong->value);
 
     $sth = self::$dbh->prepare("INSERT INTO users (email, password_hash, name, role, trainer_id) VALUES (:email, :password_hash, :name, :role, :trainer_id)");
     $sth->bindParam(":email", $email, PDO::PARAM_STR);
