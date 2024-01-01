@@ -3,7 +3,7 @@
   require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/avatar.php");
 
   if(isset($_SESSION['user_id'])) {
-    $user = $_SESSION['user'];
+    $user = Db::get_user_by_id($_SESSION['user_id']);
   }
 ?>
 

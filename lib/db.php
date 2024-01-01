@@ -133,6 +133,32 @@ class Db {
 
     return ChangePasswordError::UnknownError;
   }
+
+  public static function get_club_by_id($club_id) {
+    $sth = self::$dbh->prepare('SELECT * FROM clubs WHERE id = :id');
+    $sth->bindParam(':id', $club_id, PDO::PARAM_INT);
+    $sth->execute();
+    $club = $sth->fetch(PDO::FETCH_ASSOC);
+    return $club;
+  }
+
+  public static function get_contests_by_trainer_id($trainer_id) {
+    $sth = self::$dbh->prepare('SELECT * FROM contests WHERE trainer_id = :trainer_id');
+    $sth->bindParam(':trainer_id', $trainer_id, PDO::PARAM_INT);
+    $sth->execute();
+    $contests = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $contests;
+  }
+
+  public static function get_messages_to_user_id($user_id, $start_time=null, $end_time=null) {
+    $sth = self::$dbh->prepare('SELECT * FROM messages WHERE receiver_id = :user_id AND (:start_time IS NULL OR sent_timestamp >= :start_time) AND (:end_time IS NULL OR send_timestamp <= :end_time)');
+    $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $sth->bindParam(':start_time', $start_time, PDO::PARAM_STR);
+    $sth->bindParam(':end_time', $end_time, PDO::PARAM_STR);
+    $sth->execute();
+    $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $messages;
+  }
 }
 
 Db::init();
