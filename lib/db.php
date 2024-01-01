@@ -18,6 +18,12 @@ enum RegisterError: int {
   case Other = 12;
 }
 
+enum ChangePasswordError: int {
+  case CantFindUser = 0;
+  case CurrentPasswordIncorrect = 1;
+  case UnknownError = 2;
+}
+
 class RegisterException extends Exception {
   public function __construct($message = "", $code = 0) {
     parent::__construct($message, $code);
@@ -36,6 +42,17 @@ class Db {
   public static function get_user($email) {
     $sth = self::$dbh->prepare("SELECT * FROM users WHERE email = :email");
     $sth->bindParam(":email", $email, PDO::PARAM_STR);
+    $sth->execute();
+    $row = $sth->fetch(PDO::FETCH_ASSOC);
+    if($row) {
+      return $row;
+    }
+    return null;
+  }
+
+  public static function get_user_by_id( $id ) {
+    $sth = self::$dbh->prepare("SELECT * FROM users WHERE id = :id");
+    $sth->bindParam(":id", $id, PDO::PARAM_INT);
     $sth->execute();
     $row = $sth->fetch(PDO::FETCH_ASSOC);
     if($row) {
@@ -81,6 +98,40 @@ class Db {
   public static function get_all_trainers() {
     $result = self::$dbh->query("SELECT * FROM users u WHERE u.role = 'trainer'");
     return $result;
+  }
+
+  public static function save_profile_picture($user_id, $url) {
+    $sth = self::$dbh->prepare("UPDATE users SET avatar_url = :avatar_url WHERE id = :id");
+    $sth->bindParam(":id", $user_id, PDO::PARAM_INT);
+    $sth->bindParam(":avatar_url", $url, PDO::PARAM_STR);
+    return $sth->execute();
+  }
+
+  public static function update_user_name($user_id, $new_name) {
+    $sth = self::$dbh->prepare("UPDATE users SET name = :name WHERE id = :id");
+    $sth->bindParam(":id", $user_id, PDO::PARAM_INT);
+    $sth->bindParam(":name", $new_name, PDO::PARAM_STR);
+    return $sth->execute();
+  }
+
+  public static function update_password($user_id, $current_password, $new_password) {
+    $sth = self::$dbh->prepare("SELECT password_hash FROM users WHERE id = :id");
+    $sth->bindParam(":id", $user_id, PDO::PARAM_INT);
+    $sth->execute();
+    $user = $sth->fetch(PDO::FETCH_ASSOC);
+    if(!$user) return ChangePasswordError::CantFindUser;
+
+    if(!password_verify($current_password, $user['password_hash'])) {
+      return ChangePasswordError::CurrentPasswordIncorrect;
+    }
+
+    $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+    $sth = self::$dbh->prepare('UPDATE users SET password_hash = :new_hash WHERE id = :id');
+    $sth->bindParam(':id', $user_id, PDO::PARAM_INT);
+    $sth->bindParam(':new_hash', $new_hash, PDO::PARAM_STR);
+    if($sth->execute()) return null;
+
+    return ChangePasswordError::UnknownError;
   }
 }
 

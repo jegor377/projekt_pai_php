@@ -1,7 +1,8 @@
 <?php
+  require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/db.php");
   require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/avatar.php");
 
-  if(isset($_SESSION['user'])) {
+  if(isset($_SESSION['user_id'])) {
     $user = $_SESSION['user'];
   }
 ?>

@@ -9,7 +9,7 @@ if(isset($_POST["email"]) && isset($_POST["password"])) {
   try {
     $user = Auth::authenticate($email, $password);
     if($user) {
-      $_SESSION['user'] = $user;
+      $_SESSION['user_id'] = $user['id'];
       header("Location: /panel.php");
       die();
     } else {
