@@ -219,6 +219,13 @@ class Db {
     $sth->bindParam(':descr', $descr, PDO::PARAM_STR);
     return $sth->execute();
   }
+
+  public static function add_task($contest_id, $name) {
+    $sth = self::$dbh->prepare('INSERT INTO contest_tasks (name, position, contest_id) VALUES (:name, (SELECT MAX(ct2.position) FROM contest_tasks ct2 WHERE ct2.contest_id = :contest_id), :contest_id)');
+    $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
+    $sth->bindParam(':name', $name, PDO::PARAM_STR);
+    return $sth->execute();
+  }
 }
 
 Db::init();

@@ -8,8 +8,9 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: min-content 1fr 1fr;
   grid-template-areas:
+    "error error"
     "primary students"
     "tasks students";
   padding: 10px;
@@ -75,4 +76,10 @@
   flex-direction: row;
   gap: 5px;
   align-items: center;
+}
+
+.error-msg {
+  grid-area: error;
+  margin: 0;
+  padding: 0;
 }

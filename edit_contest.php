@@ -27,7 +27,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['operation'])) {
       save_primary_info();
     } break;
     case "add_task": {
-      ;
+      add_task();
     } break;
     case "save_results": {
       ;
@@ -70,13 +70,48 @@ function StudentHead($student) {
 
 function save_primary_info() {
   global $contest_id;
-  Db::update_contest_primary_info($contest_id, $_POST['date'], $_POST['descr']);
+  global $error_msg;
+  if(!isset($_POST['date'])) {
+    $error_msg = 'Nie podano daty';
+    return;
+  }
+
+  if(!isset($_POST['descr'])) {
+    $error_msg = 'Nie podano opisu';
+    return;
+  }
+
+  try {
+    Db::update_contest_primary_info($contest_id, $_POST['date'], $_POST['descr']);
+  } catch(Exception $e) {
+    $error_msg = "Nie udało się zaktualizować podstawowych informacji";
+  }
+}
+
+function add_task() {
+  global $contest_id;
+  global $error_msg;
+
+  if(!isset($_POST["task_name"])) {
+    $error_msg = "Nie podano nazwy zadania";
+    return;
+  }
+
+  if(strlen($_POST["task_name"]) > 256) {
+    $error_msg = "Za długa nazwa zadania";
+    return;
+  }
+
+  if($_POST['task_name'] !== '') {
+    Db::add_task($contest_id, $_POST["task_name"]);
+  }
 }
 
 require_once("templates/header.php");
 ?>
 
 <main class="container">
+  <p class="error-msg"><?= $error_msg ?? ""; ?></p>
   <div class="primary-conf">
     <h1>Edycja zawodów</h1>
     <form class="primary-conf-form" action="/edit_contest.php" method="POST">
