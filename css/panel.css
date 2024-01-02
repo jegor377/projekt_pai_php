@@ -1,20 +1,34 @@
 .container {
   display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.sportsman-container {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: fit-content fit-content;
   grid-template-areas:
     "club future_contests finished_contests"
     "messages messages messages";
-  gap: 10px;
-  padding: 10px;
+}
+
+.trainer-container {
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    "club future_contests finished_contests"
+    "messages messages students";
+}
+
+.contests {
+  min-height: 200px;
 }
 
 .contests-container {
   display: flex;
   flex-direction: column;
-  min-height: 200px;
-  max-height: 50vh;
   overflow-y: scroll;
+  max-height: 30vh;
 }
 
 #club {
@@ -33,6 +47,16 @@
   grid-area: messages;
 }
 
+.trainer-messages {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+#students {
+  grid-area: students;
+}
+
 .messages-container {
   display: flex;
   flex-direction: column;
@@ -44,4 +68,43 @@
 .message {
   border: 1px solid black;
   padding: 10px;
+}
+
+.student-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.student {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-between;
+}
+
+.student-head {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.student-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+}
+
+.message-to-all {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  flex: 1;
+}
+
+.message-to-all textarea {
+  flex: 1;
+  resize: none;
 }

@@ -179,6 +179,14 @@ class Db {
     $sth->bindParam(':content', $message, PDO::PARAM_STR);
     return $sth->execute();
   }
+
+  public static function get_trainer_students($trainer_id) {
+    $sth = self::$dbh->prepare('SELECT * FROM users WHERE trainer_id = :trainer_id');
+    $sth->bindParam(':trainer_id', $trainer_id, PDO::PARAM_INT);
+    $sth->execute();
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
+  }
 }
 
 Db::init();
