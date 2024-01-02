@@ -19,6 +19,8 @@
         <link rel="stylesheet" href="<?= $css_file ?>"/>
       <?php endforeach; ?>
     <?php endif; ?>
+
+    <script src="/js/components.js"></script>
   </head>
   <body>
     <?php require_once("navbar.php"); ?>

@@ -5,6 +5,12 @@ enum AuthError: int {
   case UserNotFound = 0;
 }
 
+class AuthException extends Exception {
+  public function __construct($message, $code = 0) {
+    parent::__construct($message, $code);
+  }
+}
+
 class Auth {
   public static function hash_password($password) {
     return password_hash($password, PASSWORD_DEFAULT);

@@ -151,13 +151,21 @@ class Db {
   }
 
   public static function get_messages_to_user_id($user_id, $start_time=null, $end_time=null) {
-    $sth = self::$dbh->prepare('SELECT * FROM messages WHERE receiver_id = :user_id AND (:start_time IS NULL OR sent_timestamp >= :start_time) AND (:end_time IS NULL OR send_timestamp <= :end_time)');
+    $sth = self::$dbh->prepare('SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND (:start_time IS NULL OR sent_timestamp >= :start_time) AND (:end_time IS NULL OR sent_timestamp <= :end_time)');
     $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $sth->bindParam(':start_time', $start_time, PDO::PARAM_STR);
     $sth->bindParam(':end_time', $end_time, PDO::PARAM_STR);
     $sth->execute();
     $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
     return $messages;
+  }
+
+  public static function post_message($receiver_id, $sender_id, $message) {
+    $sth = self::$dbh->prepare('INSERT INTO messages (receiver_id, sender_id, content) VALUES (:receiver_id, :sender_id, :content)');
+    $sth->bindParam(':receiver_id', $receiver_id, PDO::PARAM_INT);
+    $sth->bindParam(':sender_id', $sender_id, PDO::PARAM_INT);
+    $sth->bindParam(':content', $message, PDO::PARAM_STR);
+    return $sth->execute();
   }
 }
 
