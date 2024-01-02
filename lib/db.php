@@ -221,10 +221,19 @@ class Db {
   }
 
   public static function add_task($contest_id, $name) {
-    $sth = self::$dbh->prepare('INSERT INTO contest_tasks (name, position, contest_id) VALUES (:name, (SELECT MAX(ct2.position) FROM contest_tasks ct2 WHERE ct2.contest_id = :contest_id), :contest_id)');
+    $sth = self::$dbh->prepare('INSERT INTO contest_tasks (name, position, contest_id) VALUES (:name, COALESCE((SELECT MAX(ct2.position) FROM contest_tasks ct2 WHERE ct2.contest_id = :contest_id), 1), :contest_id)');
     $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
     $sth->bindParam(':name', $name, PDO::PARAM_STR);
     return $sth->execute();
+  }
+
+  public static function delete_task($task_id) {
+    $sth = self::$dbh->prepare('DELETE FROM results WHERE task_id = :task_id');
+    $sth->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+    $first_res = $sth->execute();
+    $sth = self::$dbh->prepare('DELETE FROM contest_tasks WHERE id = :task_id');
+    $sth->bindParam(':task_id', $task_id, PDO::PARAM_INT);
+    return $first_res && $sth->execute();
   }
 }
 

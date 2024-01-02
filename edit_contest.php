@@ -20,6 +20,25 @@ if(!isset($_GET['id']) && !isset($_POST['contest_id'])) {
   go_to_panel();
 }
 
+function delete_task_fail() {
+  global $error_msg;
+  $error_msg = "Nie udało się skasować zadania";
+}
+
+if(isset($_GET['action']) && isset($_GET['task_id'])) {
+  switch($_GET['action']) {
+    case 'delete': {
+      try {
+        if(Db::delete_task($_GET['task_id'])) {
+          delete_task_fail();
+        }
+      } catch(Exception $e) {
+        delete_task_fail();
+      }
+    } break;
+  }
+}
+
 $contest_id = $_GET['id'] ?? $_POST['contest_id'];
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['operation'])) {
   switch($_POST["operation"]) {
@@ -135,9 +154,7 @@ require_once("templates/header.php");
         <div class="task">
           <p><?= $task['name'] ?></p>
           <div>
-            <a href="#">^</a>
-            <a href="#">v</a>
-            <a href="#">X</a>
+            <a href="/edit_contest.php?id=<?= $contest['id'] ?>&action=delete&task_id=<?= $task['id'] ?>">X</a>
           </div>
         </div>
       <?php endforeach; ?>
