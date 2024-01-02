@@ -50,6 +50,9 @@ function Div({
   text = ""
 }) {
   return CustomElement('div', {
+    id,
+    classes,
+    style,
     children,
     text
   });
@@ -63,6 +66,25 @@ function Paragraph({
   text = ""
 }) {
   return CustomElement('p', {
+    id,
+    classes,
+    style,
+    children,
+    text
+  });
+}
+
+function Span({
+  id = null,
+  classes = [],
+  style = null,
+  children = [],
+  text = ""
+}) {
+  return CustomElement('span', {
+    id,
+    classes,
+    style,
     children,
     text
   });

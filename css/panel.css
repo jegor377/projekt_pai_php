@@ -1,10 +1,12 @@
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: fit-content fit-content;
   grid-template-areas:
     "club future_contests finished_contests"
     "messages messages messages";
+  gap: 10px;
+  padding: 10px;
 }
 
 .contests-container {
@@ -34,6 +36,6 @@
 .messages-container {
   display: flex;
   flex-direction: column;
-  max-height: 50vh;
+  max-height: 35vh;
   overflow-y: scroll;
 }

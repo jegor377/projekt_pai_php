@@ -150,11 +150,10 @@ class Db {
     return $contests;
   }
 
-  public static function get_messages_to_user_id($user_id, $start_time=null, $end_time=null) {
-    $sth = self::$dbh->prepare('SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND (:start_time IS NULL OR sent_timestamp >= :start_time) AND (:end_time IS NULL OR sent_timestamp <= :end_time)');
+  public static function get_messages_to_user_id($user_id, $passed_days = 7) {
+    $sth = self::$dbh->prepare('SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND sent_timestamp > DATE_SUB(NOW(), INTERVAL :past_days DAY)');
     $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $sth->bindParam(':start_time', $start_time, PDO::PARAM_STR);
-    $sth->bindParam(':end_time', $end_time, PDO::PARAM_STR);
+    $sth->bindParam(':past_days', $passed_days, PDO::PARAM_INT);
     $sth->execute();
     $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
     return $messages;

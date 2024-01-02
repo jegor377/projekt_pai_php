@@ -27,6 +27,8 @@ if($user['trainer_id'] !== null) {
   $contests = Db::get_contests_by_trainer_id($user['trainer_id']);
 }
 
+$messages = Db::get_messages_to_user_id($user['id']);
+
 function UserContest($contest, $user) {
   ?>
   <div class="contest">
@@ -39,6 +41,15 @@ function UserContest($contest, $user) {
         <a href="#">Sprawdź wyniki</a>
       <?php endif; ?>
     </div>
+  </div>
+  <?php
+}
+
+function Message($message) {
+  ?>
+  <div>
+    <p>Wysłano: <?= $message['sent_timestamp'] ?></p>
+    <p><?= $message['content'] ?></p>
   </div>
   <?php
 }
@@ -81,8 +92,16 @@ function UserContest($contest, $user) {
     </article>
   <?php endif; ?>
   <article id="messages">
-    <h2>Wiadomości</h2>
-    <div class="messages-container" id="messages_container"></div>
+    <h2>Wiadomości od trenera z ostatniego tygodnia</h2>
+    <div class="messages-container">
+      <?php
+        foreach($messages as $message) {
+          if($user['trainer_id'] == null || ($message['sender_id'] == $user['trainer_id'])) {
+            Message($message);
+          }
+        }
+      ?>
+    </div>
   </article>
 </main>
 
