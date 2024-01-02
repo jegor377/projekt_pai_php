@@ -1,0 +1,78 @@
+.edit-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "primary students"
+    "tasks students";
+  padding: 10px;
+  gap: 10px;
+}
+
+.primary-conf {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  grid-area: primary;
+}
+
+.students-list {
+  grid-area: students;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-field {
+  display: flex;
+  flex-direction: column;
+}
+
+#descr {
+  resize: none;
+  min-height: 200px;
+}
+
+.contest-tasks {
+  grid-area: tasks;
+}
+
+.task {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.primary-conf-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contest-tasks-form {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.student-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.student-head {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+}

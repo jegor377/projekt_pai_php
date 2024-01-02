@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const messages_container = document.getElementById('messages_container');
 })
 
 function current_datetime(date = new Date()) {
