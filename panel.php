@@ -47,7 +47,7 @@ function UserContest($contest, $user) {
 
 function Message($message) {
   ?>
-  <div>
+  <div class="message">
     <p>Wysłano: <?= $message['sent_timestamp'] ?></p>
     <p><?= $message['content'] ?></p>
   </div>

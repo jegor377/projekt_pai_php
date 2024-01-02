@@ -156,6 +156,19 @@ class Db {
     $sth->bindParam(':past_days', $passed_days, PDO::PARAM_INT);
     $sth->execute();
     $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
+
+    $messages_ids = [];
+    foreach($messages as $message) {
+      if(!$message['message_read']) {
+        $messages_ids []= $message['id'];
+      }
+    }
+    if($messages_ids) {
+      $messages_ids = implode(',', $messages_ids);
+
+      $sth2 = self::$dbh->prepare('UPDATE messages SET message_read = 1 WHERE id IN ('.$messages_ids.')');
+      $sth2->execute();
+    }
     return $messages;
   }
 

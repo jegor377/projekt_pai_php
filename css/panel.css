@@ -36,6 +36,12 @@
 .messages-container {
   display: flex;
   flex-direction: column;
-  max-height: 35vh;
+  max-height: 40vh;
   overflow-y: scroll;
+  gap: 5px;
+}
+
+.message {
+  border: 1px solid black;
+  padding: 10px;
 }
