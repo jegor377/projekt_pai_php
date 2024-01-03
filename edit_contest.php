@@ -49,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['operation'])) {
       add_task();
     } break;
     case "save_results": {
-      ;
+      save_results();
     } break;
   }
 }
@@ -126,6 +126,16 @@ function add_task() {
   }
 }
 
+function save_results() {
+  global $error_msg;
+
+  try {
+    Db::update_results($_POST);
+  } catch(UpdateResultException $e) {
+    $error_msg = $e->getMessage();
+  }
+}
+
 require_once("templates/header.php");
 ?>
 
@@ -175,6 +185,7 @@ require_once("templates/header.php");
       <form action="/edit_contest.php" method="POST">
         <input type="hidden" name="operation" value="save_results"/>
         <input type="hidden" name="contest_id" value="<?= $contest['id'] ?>"/>
+        <input type="hidden" name="contestant_id" value="<?= $student['id'] ?>"/>
         <?= StudentHead($student) ?>
         <?php if($contest_tasks): ?>
           <table>
@@ -192,9 +203,10 @@ require_once("templates/header.php");
                 ?>
                 <tr>
                   <input type="hidden" name="task_id[]" value="<?= $task['id'] ?>"/>
+                  <input type="hidden" name="result_id[]" value="<?= $result['id'] ?? 'new' ?>"/>
                   <td><?= $task['name'] ?></td>
-                  <td><input type="text" pattern="[0-9]*" name="value[]" value="<?= $result['value'] ?? "" ?>"/></td>
-                  <td><input type="number" name="grade[]" value="<?= $result['grade'] ?? "" ?>"/></td>
+                  <td><input type="number" name="value[]" value="<?= $result['value'] ?? "" ?>"/></td>
+                  <td><input max="10" min="1" type="number" name="grade[]" value="<?= $result['grade'] ?? "" ?>"/></td>
                 </tr>
               <?php endforeach; ?>
             </tbody>

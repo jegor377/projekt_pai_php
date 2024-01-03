@@ -1,5 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/config.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/integer.php");
 define("MAX_EMAIL_LEN", 100);
 
 enum RegisterError: int {
@@ -24,7 +25,25 @@ enum ChangePasswordError: int {
   case UnknownError = 2;
 }
 
+enum UpdateResultError: int {
+  case TaskIdMissing = 0;
+  case ResultIdMissing = 1;
+  case ValueMissing = 2;
+  case GradeMissing = 3;
+  case ContestantIdMissing = 4;
+  case ContestIdMissing = 5;
+  case ValueIsNotInt = 6;
+  case GradeIsNotInt = 7;
+  case GradeIsOutOfRange = 8;
+}
+
 class RegisterException extends Exception {
+  public function __construct($message = "", $code = 0) {
+    parent::__construct($message, $code);
+  }
+}
+
+class UpdateResultException extends Exception {
   public function __construct($message = "", $code = 0) {
     parent::__construct($message, $code);
   }
@@ -234,6 +253,44 @@ class Db {
     $sth = self::$dbh->prepare('DELETE FROM contest_tasks WHERE id = :task_id');
     $sth->bindParam(':task_id', $task_id, PDO::PARAM_INT);
     return $first_res && $sth->execute();
+  }
+
+  public static function update_results($data) {
+    $contest_id = $data['contest_id'] ?? throw new UpdateResultException("Nie podano id zadania", UpdateResultError::ContestIdMissing->value);
+    $contestant_id = $data['contestant_id'] ?? throw new UpdateResultException("Nie podano id sportowca", UpdateResultError::ContestantIdMissing->value);
+    $task_id = $data['task_id'];
+    $result_id = $data['result_id'];
+    $value = $data['value'];
+    $grade = $data['grade'];
+
+    $upd_sth = self::$dbh->prepare('UPDATE results SET value = :value, grade = :grade WHERE id = :result_id');
+
+    for( $i = 0; $i < count($data['result_id']); $i++ ) {
+      if(!isset($task_id[$i])) throw new UpdateResultException("Nie podano id zadania", UpdateResultError::TaskIdMissing->value);
+      if(!isset($value[$i])) throw new UpdateResultException("Nie podano wyniku", UpdateResultError::ValueMissing->value);
+      if(!isset($grade[$i])) throw new UpdateResultException("Nie podano oceny", UpdateResultError::GradeMissing->value);
+
+      if($value[$i] === '' && $grade[$i] === '') continue;
+
+      if(!is_str_int($value[$i])) throw new UpdateResultException("Wynik nie jest liczbą", UpdateResultError::ValueIsNotInt->value);
+      if(!is_str_int($grade[$i])) throw new UpdateResultException("Ocena nie jest liczbą", UpdateResultError::GradeIsNotInt->value);
+      if($grade[$i] < 1 || $grade[$i] > 10) throw new UpdateResultException("Ocena jest po za zakresem (1 - 10)", UpdateResultError::GradeIsOutOfRange->value);
+
+      if($result_id[$i] === 'new') {
+        $sth = self::$dbh->prepare('INSERT INTO results (task_id, contest_id, contestant_id, value, grade) VALUES (:task_id, :contest_id, :contestant_id, :value, :grade)');
+        $sth->bindParam(':task_id', $task_id[$i], PDO::PARAM_INT);
+        $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
+        $sth->bindParam(':contestant_id', $contestant_id, PDO::PARAM_INT);
+        $sth->bindParam(':value', $value[$i], PDO::PARAM_INT);
+        $sth->bindParam(':grade', $grade[$i], PDO::PARAM_INT);
+        $sth->execute();
+      } else {
+        $upd_sth->bindParam(':value', $value[$i], PDO::PARAM_INT);
+        $upd_sth->bindParam(':grade', $grade[$i], PDO::PARAM_INT);
+        $upd_sth->bindParam(':result_id', $result_id[$i], PDO::PARAM_INT);
+        $upd_sth->execute();
+      }
+    }
   }
 }
 
