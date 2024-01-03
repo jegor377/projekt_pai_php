@@ -1,15 +1,8 @@
 <?php
-session_start();
 
-require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/db.php");
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/avatar.php");
+require_once("templates/session.php");
 
-if(isset($_SESSION["user_id"])) {
-  $user = Db::get_user_by_id($_SESSION['user_id']);
-} else {
-  header("Location: /login.php");
-  exit();
-}
 
 if($user['role'] !== 'trainer') {
   header('Location: /panel.php');

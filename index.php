@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 $title = "Strona główna";
 require_once("templates/header.php");
 ?>

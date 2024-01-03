@@ -1,7 +1,7 @@
 <?php
-session_start();
 
-require_once($_SERVER["DOCUMENT_ROOT"]. "/lib/db.php");
+require_once("templates/session.php");
+
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/input.php");
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/avatar.php");
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/files.php");
@@ -50,13 +50,6 @@ function save_profile_picture($user_id) {
     'error'=> null,
     'saved' => false
   ];
-}
-
-if(isset($_SESSION["user_id"])) {
-  $user = Db::get_user_by_id($_SESSION['user_id']);
-} else {
-  header("Location: /login.php");
-  exit();
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['setting_type'])) {
