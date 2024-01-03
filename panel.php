@@ -92,7 +92,7 @@ function Message($message) {
         ?>
       </div>
       <?php if($user['role'] === 'trainer'): ?>
-        <a href="#">Dodaj</a>
+        <a href="/add_contest.php">Dodaj</a>
       <?php endif; ?>
     </article>
     <article class="contests" id="finished_contests">

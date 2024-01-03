@@ -11,6 +11,11 @@ if(isset($_SESSION["user_id"])) {
   exit();
 }
 
+if($user['role'] !== 'trainer') {
+  header('Location: /panel.php');
+  exit();
+}
+
 function go_to_panel() {
   header("Location: /panel.php");
   exit();
@@ -101,7 +106,7 @@ function save_primary_info() {
   }
 
   try {
-    Db::update_contest_primary_info($contest_id, $_POST['date'], $_POST['descr']);
+    Db::update_contest_primary_info($contest_id, $_POST['date'], $_POST['descr'], $_POST['finished'] ?? false);
   } catch(Exception $e) {
     $error_msg = "Nie udało się zaktualizować podstawowych informacji";
   }
@@ -153,6 +158,10 @@ require_once("templates/header.php");
       <div class="edit-field">
         <label for="descr">Opis</label>
         <textarea id="descr" name="descr"><?= $contest['description'] ?></textarea>
+      </div>
+      <div>
+        <label for="finished">Zakończone</label>
+        <input type="checkbox" id="finished" name="finished" <?= $contest['finished'] ? "checked" : "" ?>/>
       </div>
       <input type="submit" value="Zapisz"/>
     </form>

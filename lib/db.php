@@ -231,11 +231,12 @@ class Db {
     return $rows;
   }
 
-  public static function update_contest_primary_info($contest_id, $date, $descr) {
-    $sth = self::$dbh->prepare('UPDATE contests SET time = :ctime, description = :descr WHERE id = :contest_id');
+  public static function update_contest_primary_info($contest_id, $date, $descr, $finished) {
+    $sth = self::$dbh->prepare('UPDATE contests SET time = :ctime, description = :descr, finished = :finished WHERE id = :contest_id');
     $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
     $sth->bindParam(':ctime', $date, PDO::PARAM_STR);
     $sth->bindParam(':descr', $descr, PDO::PARAM_STR);
+    $sth->bindParam(':finished', $finished, PDO::PARAM_BOOL);
     return $sth->execute();
   }
 
@@ -291,6 +292,13 @@ class Db {
         $upd_sth->execute();
       }
     }
+  }
+
+  public static function add_contest($trainer_id) {
+    $sth = self::$dbh->prepare('INSERT INTO contests (trainer_id) VALUES (:trainer_id)');
+    $sth->bindParam(':trainer_id', $trainer_id, PDO::PARAM_INT);
+    if($sth->execute()) return self::$dbh->lastInsertId();
+    return null;
   }
 }
 
