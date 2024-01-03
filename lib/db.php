@@ -161,6 +161,12 @@ class Db {
     return $club;
   }
 
+  public static function get_available_clubs() {
+    $sth = self::$dbh->prepare('SELECT * FROM clubs');
+    $sth->execute();
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+  }
+
   public static function get_contests_by_trainer_id($trainer_id) {
     $sth = self::$dbh->prepare('SELECT * FROM contests WHERE trainer_id = :trainer_id');
     $sth->bindParam(':trainer_id', $trainer_id, PDO::PARAM_INT);
@@ -299,6 +305,19 @@ class Db {
     $sth->bindParam(':trainer_id', $trainer_id, PDO::PARAM_INT);
     if($sth->execute()) return self::$dbh->lastInsertId();
     return null;
+  }
+
+  public static function change_club($user_id, $club_id) {
+    $sth = self::$dbh->prepare('SELECT * FROM clubs WHERE id = :club_id');
+    $sth->bindParam(':club_id', $club_id, PDO::PARAM_INT);
+    $sth->execute();
+    if($sth->fetch(PDO::FETCH_ASSOC)) {
+      $sth = self::$dbh->prepare('UPDATE users SET club_id = :club_id WHERE id = :user_id');
+      $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+      $sth->bindParam(':club_id', $club_id, PDO::PARAM_INT);
+      return $sth->execute();
+    }
+    return false;
   }
 }
 

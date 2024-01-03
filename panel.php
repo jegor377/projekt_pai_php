@@ -28,6 +28,8 @@ if($user['role'] === 'trainer') {
   $students = Db::get_trainer_students($user['id']);
 }
 
+$clubs = Db::get_available_clubs();
+
 function Contest($contest, $user) {
   ?>
   <div class="contest">
@@ -56,9 +58,13 @@ function Message($message) {
   </div>
   <?php
 }
+
 ?>
 
 <main class="container <?= $user['role'] === 'trainer' ? 'trainer-container' : 'sportsman-container' ?>">
+  <article class="info">
+    <p><?= $_GET['msg'] ?? '' ?></p>
+  </article>
   <article class="club" id="club">
     <h2>Klub</h2>
     <?php if(isset($user_club) && $user_club): ?>
@@ -71,7 +77,23 @@ function Message($message) {
     <?php else: ?>
       <p>Nie jesteś przypisany do żadnego klubu</p>
     <?php endif; ?>
-    <a href="#">Zmień</a>
+
+    <?php
+      $clubs = array_filter($clubs, function($club) {
+        global $user;
+        return $club['id'] !== $user['club_id'];
+      });
+    ?>
+    <?php if($clubs): ?>
+      <form action="/change_club.php" method="POST">
+        <select name="club_id">
+          <?php foreach($clubs as $club): ?>
+            <option value="<?= $club['id'] ?>"><?= $club['name'] ?></option>
+          <?php endforeach; ?>
+        </select>
+        <input type="submit" value="Zmień"/>
+      </form>
+    <?php endif; ?>
   </article>
 
   <?php if(isset($contests) && $contests): ?>

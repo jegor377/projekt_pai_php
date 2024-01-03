@@ -6,18 +6,30 @@
 
 .sportsman-container {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: fit-content fit-content;
+  grid-template-rows: min-content fit-content fit-content;
   grid-template-areas:
+    "info info info"
     "club future_contests finished_contests"
     "messages messages messages";
 }
 
 .trainer-container {
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: min-content min-content 1fr;
   grid-template-areas:
+    "info info info"
     "club future_contests finished_contests"
     "messages messages students";
+}
+
+.info {
+  grid-area: info;
+}
+
+.info p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 .contests {
