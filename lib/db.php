@@ -229,12 +229,34 @@ class Db {
     return $rows;
   }
 
+  public static function get_results_by_user_id($user_id) {
+    $sth = self::$dbh->prepare('SELECT r.*, ct.name, ct.position, c.time, c.description FROM results r LEFT JOIN contest_tasks ct ON (ct.id = r.task_id) LEFT JOIN contests c ON (c.id = r.contest_id) WHERE r.contestant_id = :user_id ORDER BY ct.position ASC');
+    $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $sth->execute();
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
+  }
+
   public static function get_contest_tasks_by_contest_id($contest_id) {
     $sth = self::$dbh->prepare('SELECT * FROM contest_tasks WHERE contest_id = :contest_id');
     $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
     $sth->execute();
     $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
     return $rows;
+  }
+
+  public static function get_contest_tasks_by_contest_ids($contest_ids) {
+    $sth = self::$dbh->prepare('SELECT * FROM contest_tasks WHERE contest_id = :contest_id');
+    $contest_id = 0;
+    $result = [];
+    $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
+    foreach($contest_ids as $id) {
+      $contest_id = $id;
+      $sth->execute();
+      $result = array_merge($result, $sth->fetchAll(PDO::FETCH_ASSOC));
+    }
+    
+    return $result;
   }
 
   public static function update_contest_primary_info($contest_id, $date, $descr, $finished) {

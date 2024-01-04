@@ -153,7 +153,7 @@ function Message($message) {
               <p><?= $student['name'] ?></p>
             </div>
             <div class="student-actions">
-              <a href="#">Wyniki</a>
+              <a href="/sportsman_results.php?id=<?= $student['id'] ?>">Wyniki</a>
               <a href="#">Wiadomości</a>
             </div>
           </div>

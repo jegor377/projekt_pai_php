@@ -2,7 +2,7 @@
 
 require_once("templates/session.php");
 
-if(!isset($_GET['id'])) {
+if(!isset($_GET['id']) || $user['role'] !== 'trainer') {
   header("Location: /panel.php");
   exit();
 }
