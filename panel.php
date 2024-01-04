@@ -43,7 +43,7 @@ function Contest($contest, $user) {
       <?php endif; ?>
       <?php if($user['role'] === 'trainer'): ?> 
         <a href="/edit_contest.php?id=<?= $contest['id'] ?>">Edytuj</a>
-        <a href="#">Raport</a>
+        <a href="/raport.php?id=<?= $contest['id'] ?>">Raport</a>
       <?php endif; ?>
     </div>
   </div>
