@@ -175,35 +175,28 @@ class Db {
     return $contests;
   }
 
-  public static function get_messages_to_user_id($user_id, $passed_days = 7) {
-    $sth = self::$dbh->prepare('SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND sent_timestamp > DATE_SUB(NOW(), INTERVAL :past_days DAY)');
+  public static function get_messages_to_user_id($user_id, $max_messages=100, $only_read_messages=false) {
+    $sth = self::$dbh->prepare('SELECT * FROM (SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND (read_timestamp IS NULL OR (NOT :only_read_messages)) ORDER BY sent_timestamp DESC LIMIT :max_messages) AS sub ORDER BY sent_timestamp ASC');
     $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $sth->bindParam(':past_days', $passed_days, PDO::PARAM_INT);
+    $sth->bindParam(':max_messages', $max_messages, PDO::PARAM_INT);
+    $sth->bindParam(':only_read_messages', $only_read_messages, PDO::PARAM_BOOL);
     $sth->execute();
     $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
-
-    $messages_ids = [];
-    foreach($messages as $message) {
-      if(!$message['message_read']) {
-        $messages_ids []= $message['id'];
-      }
-    }
-    if($messages_ids) {
-      $messages_ids = implode(',', $messages_ids);
-
-      $sth2 = self::$dbh->prepare('UPDATE messages SET message_read = 1 WHERE id IN ('.$messages_ids.')');
-      $sth2->execute();
-    }
     return $messages;
   }
 
-  public static function get_unread_messages_to_user_id($user_id, $max_messages=100) {
-    $sth = self::$dbh->prepare('SELECT * FROM (SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND read_timestamp IS NULL ORDER BY sent_timestamp DESC LIMIT :max_messages) AS sub ORDER BY sent_timestamp ASC');
-    $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    $sth->bindParam(':max_messages', $max_messages, PDO::PARAM_INT);
-    $sth->execute();
-    $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
-    return $messages;
+  public static function read_message($message_id) {
+    $sth = self::$dbh->prepare('UPDATE messages SET read_timestamp = NOW() WHERE id = :message_id');
+    $sth->bindParam(':message_id', $message_id, PDO::PARAM_INT);  
+    $updated = $sth->execute();
+    if ($updated) {
+      $sth = self::$dbh->prepare('SELECT * FROM messages WHERE id = :message_id');
+      $sth->bindParam(':message_id', $message_id, PDO::PARAM_INT);
+      $sth->execute();
+      $message = $sth->fetch(PDO::FETCH_ASSOC);
+      return $message;
+    }
+    return $updated;
   }
 
   public static function post_message($receiver_id, $sender_id, $message) {

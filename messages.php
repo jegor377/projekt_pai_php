@@ -20,7 +20,7 @@ if(!$sportsman) {
   exit();
 }
 
-$messages = Db::get_unread_messages_to_user_id($id);
+$messages = Db::get_messages_to_user_id($id);
 
 $css_files = [
   '/css/messages.css'

@@ -30,7 +30,9 @@ if($trainer_id !== null) {
   $contests = Db::get_contests_by_trainer_id($trainer_id);
 }
 
-$messages = Db::get_unread_messages_to_user_id($user['id']);
+if($user['role'] === 'sportsman') {
+  $messages = Db::get_messages_to_user_id($user['id'], 100, true);
+}
 
 if($user['role'] === 'trainer') {
   $students = Db::get_trainer_students($user['id']);
@@ -60,10 +62,10 @@ function Contest($contest, $user) {
 
 function Message($message) {
   ?>
-  <div class="message">
-    <p>Wysłano: <?= $message['sent_timestamp'] ?></p>
-    <p><?= $message['content'] ?></p>
-  </div>
+    <a href="/message.php?id=<?= $message['id'] ?>" class="message">
+      <p>Wysłano: <?= $message['sent_timestamp'] ?></p>
+      <p><?= shortcut($message['content'], 10) ?></p>
+    </a>
   <?php
 }
 
@@ -134,10 +136,16 @@ function Message($message) {
       <h2>Wiadomości od trenera z ostatniego tygodnia</h2>
       <div class="messages-container">
         <?php
-          foreach($messages as $message) {
-            if($user['trainer_id'] == null || ($message['sender_id'] == $user['trainer_id'])) {
-              Message($message);
+          if($messages) {
+            foreach($messages as $message) {
+              if($user['trainer_id'] == null || ($message['sender_id'] == $user['trainer_id'])) {
+                Message($message);
+              }
             }
+          } else {
+            ?>
+              <p>Brak wiadomości</p>
+            <?php
           }
         ?>
       </div>
