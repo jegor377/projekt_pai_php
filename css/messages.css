@@ -1,0 +1,45 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  height: 8vh;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content auto 100px;
+  grid-template-areas: 
+    "header"
+    "messages"
+    "writing";
+  height: 92vh;
+}
+
+h1 {
+  grid-area: header;
+}
+
+.messages {
+  grid-area: messages;
+  overflow-y: scroll;
+}
+
+.write-message {
+  display: flex;
+  grid-area: writing;
+}
+
+.write-message form {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.write-message textarea {
+  flex: 1;
+  resize: none;
+}

@@ -197,7 +197,7 @@ class Db {
     return $messages;
   }
 
-  public static function get_unread_messages_to_user_id($user_id, $max_messages) {
+  public static function get_unread_messages_to_user_id($user_id, $max_messages=100) {
     $sth = self::$dbh->prepare('SELECT * FROM (SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND read_timestamp IS NULL ORDER BY sent_timestamp DESC LIMIT :max_messages) AS sub ORDER BY sent_timestamp ASC');
     $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $sth->bindParam(':max_messages', $max_messages, PDO::PARAM_INT);
@@ -207,11 +207,27 @@ class Db {
   }
 
   public static function post_message($receiver_id, $sender_id, $message) {
-    $sth = self::$dbh->prepare('INSERT INTO messages (receiver_id, sender_id, content) VALUES (:receiver_id, :sender_id, :content)');
-    $sth->bindParam(':receiver_id', $receiver_id, PDO::PARAM_INT);
-    $sth->bindParam(':sender_id', $sender_id, PDO::PARAM_INT);
-    $sth->bindParam(':content', $message, PDO::PARAM_STR);
-    return $sth->execute();
+    if($receiver_id !== 'all') {
+      $sth = self::$dbh->prepare('INSERT INTO messages (receiver_id, sender_id, content) VALUES (:receiver_id, :sender_id, :content)');
+      $sth->bindParam(':receiver_id', $receiver_id, PDO::PARAM_INT);
+      $sth->bindParam(':sender_id', $sender_id, PDO::PARAM_INT);
+      $sth->bindParam(':content', $message, PDO::PARAM_STR);
+      return $sth->execute();
+    } else {
+      $students = self::get_trainer_students($sender_id);
+      $sth = self::$dbh->prepare('INSERT INTO messages (receiver_id, sender_id, content) VALUES (:receiver_id, :sender_id, :content)');
+      $student_id = null;
+      $sth->bindParam(':receiver_id', $student_id, PDO::PARAM_INT);
+      $sth->bindParam(':sender_id', $sender_id, PDO::PARAM_INT);
+      $sth->bindParam(':content', $message, PDO::PARAM_STR);
+      foreach($students as $student) {
+        $student_id = $student['id'];
+        if(!$sth->execute()) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 
   public static function get_trainer_students($trainer_id) {

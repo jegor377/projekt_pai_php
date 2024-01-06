@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if(isset($_SESSION["user_id"])) {
+  header("Location: /panel.php");
+  die();
+}
+
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/db.php");
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/input.php");
 

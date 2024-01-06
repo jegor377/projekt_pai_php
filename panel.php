@@ -2,6 +2,14 @@
 
 require_once("templates/session.php");
 
+if(isset($_POST["message"]) && isset($_POST["receiver_id"]) && $_POST["message"] !== "" && $user['role'] === 'trainer') {
+  if (!Db::post_message($_POST["receiver_id"], $user["id"], $_POST["message"])) {
+    $send_msg = "Nie udało się wysłać wiadomości!";
+  } else {
+    $send_msg = "Wiadomość została wysłana do wszystkich przypisanych sportowców!";
+  }
+}
+
 define("SHORTCUT_LEN", 20);
 
 require_once($_SERVER["DOCUMENT_ROOT"] ."/lib/string.php");
@@ -22,7 +30,7 @@ if($trainer_id !== null) {
   $contests = Db::get_contests_by_trainer_id($trainer_id);
 }
 
-$messages = Db::get_messages_to_user_id($user['id']);
+$messages = Db::get_unread_messages_to_user_id($user['id']);
 
 if($user['role'] === 'trainer') {
   $students = Db::get_trainer_students($user['id']);
@@ -138,10 +146,14 @@ function Message($message) {
   <?php if($user['role'] === 'trainer'): ?>
     <article id="messages" class="trainer-messages">
       <h2>Wiadomość do wszystkich sportowców</h2>
-      <form class="message-to-all">
-        <textarea name="message"></textarea>
+      <form class="message-to-all" action="/panel.php" method="POST">
+        <input type="hidden" name="receiver_id" value="all"/>
+        <textarea name="message" placeholder="Napisz wiadomość"></textarea>
         <input type="submit" value="Wyślij"/>
       </form>
+      <?php if(isset($send_msg)): ?>
+        <p><?= $send_msg ?></p>
+      <?php endif; ?>
     </article>
     <article id="students">
       <h2>Sportowcy</h2>
