@@ -197,6 +197,15 @@ class Db {
     return $messages;
   }
 
+  public static function get_unread_messages_to_user_id($user_id, $max_messages) {
+    $sth = self::$dbh->prepare('SELECT * FROM (SELECT m.*, u.name AS sender_name FROM messages m LEFT JOIN users u ON (m.sender_id = u.id) WHERE receiver_id = :user_id AND read_timestamp IS NULL ORDER BY sent_timestamp DESC LIMIT :max_messages) AS sub ORDER BY sent_timestamp ASC');
+    $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $sth->bindParam(':max_messages', $max_messages, PDO::PARAM_INT);
+    $sth->execute();
+    $messages = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $messages;
+  }
+
   public static function post_message($receiver_id, $sender_id, $message) {
     $sth = self::$dbh->prepare('INSERT INTO messages (receiver_id, sender_id, content) VALUES (:receiver_id, :sender_id, :content)');
     $sth->bindParam(':receiver_id', $receiver_id, PDO::PARAM_INT);

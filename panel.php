@@ -154,7 +154,7 @@ function Message($message) {
             </div>
             <div class="student-actions">
               <a href="/sportsman_results.php?id=<?= $student['id'] ?>">Wyniki</a>
-              <a href="#">Wiadomości</a>
+              <a href="/messages.php?id=<?= $student['id'] ?>">Wiadomości</a>
             </div>
           </div>
         <?php endforeach; ?>
