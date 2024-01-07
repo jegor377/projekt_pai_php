@@ -305,10 +305,10 @@ class Db {
   public static function delete_task($task_id) {
     $sth = self::$dbh->prepare('DELETE FROM results WHERE task_id = :task_id');
     $sth->bindParam(':task_id', $task_id, PDO::PARAM_INT);
-    $first_res = $sth->execute();
+    $sth->execute();
     $sth = self::$dbh->prepare('DELETE FROM contest_tasks WHERE id = :task_id');
     $sth->bindParam(':task_id', $task_id, PDO::PARAM_INT);
-    return $first_res && $sth->execute();
+    $sth->execute();
   }
 
   public static function update_results($data) {

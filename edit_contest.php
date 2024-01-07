@@ -18,20 +18,13 @@ if(!isset($_GET['id']) && !isset($_POST['contest_id'])) {
   go_to_panel();
 }
 
-function delete_task_fail() {
-  global $error_msg;
-  $error_msg = "Nie udało się skasować zadania";
-}
-
 if(isset($_GET['action']) && isset($_GET['task_id'])) {
   switch($_GET['action']) {
     case 'delete': {
       try {
-        if(Db::delete_task($_GET['task_id'])) {
-          delete_task_fail();
-        }
+        Db::delete_task($_GET['task_id']);
       } catch(Exception $e) {
-        delete_task_fail();
+        $error_msg = "Nie udało się skasować zadania";
       }
     } break;
   }
@@ -213,8 +206,8 @@ require_once("templates/header.php");
               <?php endforeach; ?>
             </tbody>
           </table>
+          <input type="submit" value="Zapisz"/>
         <?php endif; ?>
-        <input type="submit" value="Zapisz"/>
       </form>
     <?php endforeach; ?>
   </div>

@@ -8,10 +8,14 @@ if(!isset($_GET['id']) || $user['role'] !== 'sportsman') {
 
 $message = Db::read_message($_GET['id']);
 
+$css_files = [
+  "/css/message.css"
+];
+
 require_once("templates/header.php");
 ?>
 
-<main>
+<main class="container">
   <?php if($message): ?>
     <h1>Wiadomość od trenera</h1>
     <article>

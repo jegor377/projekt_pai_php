@@ -106,32 +106,30 @@ function Message($message) {
     <?php endif; ?>
   </article>
 
-  <?php if(isset($contests) && $contests): ?>
-    <article class="contests box" id="future_contests">
-      <h2>Nadchodzące zawody</h2>
-      <div class="contests-container">
-        <?php
-          foreach($contests as $contest) {
-            if(!$contest['finished']) Contest($contest, $user);
-          }
-        ?>
-      </div>
-      <br>
-      <?php if($user['role'] === 'trainer'): ?>
-        <a href="/add_contest.php">Dodaj</a>
-      <?php endif; ?>
-    </article>
-    <article class="contests box" id="finished_contests">
-      <h2>Zakończone zawody</h2>
-      <div class="contests-container">
-        <?php
-          foreach($contests as $contest) {
-            if($contest['finished']) Contest($contest, $user);
-          }
-        ?>
-      </div>
-    </article>
-  <?php endif; ?>
+  <article class="contests box" id="future_contests">
+    <h2>Nadchodzące zawody</h2>
+    <div class="contests-container">
+      <?php
+        foreach($contests as $contest) {
+          if(!$contest['finished']) Contest($contest, $user);
+        }
+      ?>
+    </div>
+    <br>
+    <?php if($user['role'] === 'trainer'): ?>
+      <a href="/add_contest.php">Dodaj</a>
+    <?php endif; ?>
+  </article>
+  <article class="contests box" id="finished_contests">
+    <h2>Zakończone zawody</h2>
+    <div class="contests-container">
+      <?php
+        foreach($contests as $contest) {
+          if($contest['finished']) Contest($contest, $user);
+        }
+      ?>
+    </div>
+  </article>
   <?php if($user['role'] === 'sportsman'): ?>
     <article id="messages" class="box">
       <h2>Wiadomości od trenera z ostatniego tygodnia</h2>
