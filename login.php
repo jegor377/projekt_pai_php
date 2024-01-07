@@ -30,36 +30,43 @@ if(isset($_POST["email"]) && isset($_POST["password"])) {
   }
 }
 
+$css_files = [
+  "/css/login.css"
+];
+
 $title = "Zaloguj";
 require_once("templates/header.php");
 ?>
 
 <main class="container">
-  <?php
-    if(isset($_GET['msg'])) {
-      ?>
-        <p><?= htmlspecialchars($_GET['msg'], ENT_QUOTES); ?></p>
-      <?php
-    }
-  ?>
-  <form action="/login.php" method="POST">
-    <div>
-      <label for="email">Email</label>
-      <input id="email" name="email" type="email" required maxlength="100"/>
-    </div>
-    <div>
-      <label for="password">Hasło</label>
-      <input id="password" name="password" type="password" required/>
-    </div>
-    <input type="submit" value="Zaloguj"/>
-  </form>
-  <?php
-    if(isset($error_msg)) {
-      ?>
-      <p><?= $error_msg ?></p>
-      <?php
-    }
-  ?>
+  <article class="form-container">
+    <h1>Zaloguj się</h1>
+    <?php
+      if(isset($_GET['msg'])) {
+        ?>
+          <p><?= htmlspecialchars($_GET['msg'], ENT_QUOTES); ?></p>
+        <?php
+      }
+    ?>
+    <form action="/login.php" method="POST" class="form">
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required maxlength="100"/>
+      </div>
+      <div class="form-field">
+        <label for="password">Hasło</label>
+        <input id="password" name="password" type="password" required/>
+      </div>
+      <input type="submit" value="Zaloguj"/>
+    </form>
+    <?php
+      if(isset($error_msg)) {
+        ?>
+        <p><?= $error_msg ?></p>
+        <?php
+      }
+    ?>
+  </article>
 </main>
 
 <?php

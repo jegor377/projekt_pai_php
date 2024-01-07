@@ -1,0 +1,45 @@
+body {
+  min-height: 100vh;
+}
+
+.navbar {
+  height: 8vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 92vh;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  box-shadow: 0px 0px 10px var(--dark-color);
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+
+.form-container p {
+  margin-bottom: 0px;
+}
+
+.form-container h1 {
+  margin-top: 0px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 5px;
+}

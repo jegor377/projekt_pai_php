@@ -72,6 +72,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $trainers = Db::get_all_trainers();
+$title = "Zarejestruj";
 
 require_once("templates/header.php");
 ?>
