@@ -120,7 +120,7 @@ require_once("templates/header.php");
 <main class="container">
   <article class="settings-container">
     <h2>Podstawowe informacje</h2>
-    <form id="primary_info_form" action="/settings.php" method="POST" enctype="multipart/form-data">
+    <form id="primary_info_form" action="/settings.php" method="POST" enctype="multipart/form-data" class="form">
       <input type="hidden" name="setting_type" value="primary_info"/>
       <img class="avatar" src="<?= get_avatar_url($user); ?>"/>
       <div class="form-field">
@@ -140,7 +140,7 @@ require_once("templates/header.php");
   </article>
   <article class="settings-container">
     <h2>Zmiana hasła</h2>
-    <form id="change_password_form" action="/settings.php" method="POST">
+    <form class="form" id="change_password_form" action="/settings.php" method="POST">
       <input type="hidden" name="setting_type" value="change_password"/>
       <div class="form-field">
         <label for="current_password">Aktualne hasło</label>

@@ -26,6 +26,12 @@ body {
   min-width: 350px;
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .form-field {
   display: flex;
   flex-direction: row;
