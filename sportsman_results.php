@@ -30,11 +30,11 @@ $css_files = [
 require_once("templates/header.php");
 ?>
 
-<main>
+<main class="container">
   <h1>Wyniki sportowca: <?= $student['name'] ?></h1>
-  <article>
+  <article class="results-container">
     <?php foreach($results as $contest): ?>
-      <div>
+      <div class="contest box">
         <?php
           $contest_time = $contest[0]['time'];
           $contest_descr = $contest[0]['description'];

@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+}
+
+.contest {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+.contest a {
+  text-decoration: none;
+  color: var(--dark-color);
+  padding: 5px;
+  background-color: var(--light-color);
+  transition-duration: 0.2s;
+  width: min-content;
+}
+
+.contest p {
+  margin: 0;
+}
+
+.contest a:hover {
+  opacity: 0.8;
+}
+
+.contest table, .contest th, .contest td {
+  border: 1px solid;
+}
+
+.contest th, .contest td {
+  padding: 5px;
+}
+
+.contest table {
+  border-collapse: collapse;
+}
