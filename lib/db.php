@@ -255,6 +255,15 @@ class Db {
     return $rows;
   }
 
+  public static function get_user_results_in_contest_id($user_id, $contest_id) {
+    $sth = self::$dbh->prepare('SELECT * FROM results r LEFT JOIN contest_tasks ct ON (ct.id = r.task_id) WHERE r.contestant_id = :user_id AND r.contest_id = :contest_id ORDER BY ct.position ASC');
+    $sth->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);
+    $sth->execute();
+    $rows = $sth->fetchAll(PDO::FETCH_ASSOC);
+    return $rows;
+  }
+
   public static function get_contest_tasks_by_contest_id($contest_id) {
     $sth = self::$dbh->prepare('SELECT * FROM contest_tasks WHERE contest_id = :contest_id');
     $sth->bindParam(':contest_id', $contest_id, PDO::PARAM_INT);

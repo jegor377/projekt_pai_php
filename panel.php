@@ -49,7 +49,7 @@ function Contest($contest, $user) {
     </div>
     <div class="contest-actions">
       <?php if($contest['finished'] && $user['role'] === 'sportsman'): ?> 
-        <a href="#">Sprawdź wyniki</a>
+        <a href="/student_results.php?id=<?= $contest['id'] ?>">Sprawdź wyniki</a>
       <?php endif; ?>
       <?php if($user['role'] === 'trainer'): ?> 
         <a href="/edit_contest.php?id=<?= $contest['id'] ?>">Edytuj</a>
