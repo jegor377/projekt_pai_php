@@ -98,7 +98,7 @@ class Db {
     $role = $user["role"] ?? throw new RegisterException("Role is missing", RegisterError::RoleMissing->value);
     if($role != 'sportsman' && $role != "trainer") throw new RegisterException("Role is incorrect", RegisterError::RoleIncorrect->value);
     
-    $trainer_id = $user["trainer_id"] ?? ($user["role"] === 'sportsman' ? throw new RegisterException("Trainer id is missing", RegisterError::TrainerIdMissing->value) : null);
+    $trainer_id = ($user["role"] === 'sportsman') ? ($user["trainer_id"] ?? throw new RegisterException("Trainer id is missing", RegisterError::TrainerIdMissing->value)) : null;
 
     $name = $user["name"] ?? throw new RegisterException("Name is missing", RegisterError::NameMissing->value);
     if(strlen($name) > 256) throw new RegisterException("Name is too long", RegisterError::NameTooLong->value);
