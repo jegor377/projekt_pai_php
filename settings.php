@@ -117,17 +117,17 @@ $css_files = [
 require_once("templates/header.php");
 ?>
 
-<main>
-  <article>
+<main class="container">
+  <article class="settings-container">
     <h2>Podstawowe informacje</h2>
     <form id="primary_info_form" action="/settings.php" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="setting_type" value="primary_info"/>
       <img class="avatar" src="<?= get_avatar_url($user); ?>"/>
-      <div>
+      <div class="form-field">
         <label for="avatar">Avatar</label>
         <input name="avatar" id="avatar" type="file"/>
       </div>
-      <div>
+      <div class="form-field">
         <label for="name">Imię i nazwisko</label>
         <!-- maxlength="256" -->
         <input name="name" id="name"  required <?= to_val($user['name'] ?? null) ?>/>
@@ -138,19 +138,19 @@ require_once("templates/header.php");
       <p><?= $error_msg ?></p>
     <?php endif; ?>
   </article>
-  <article>
+  <article class="settings-container">
     <h2>Zmiana hasła</h2>
     <form id="change_password_form" action="/settings.php" method="POST">
       <input type="hidden" name="setting_type" value="change_password"/>
-      <div>
+      <div class="form-field">
         <label for="current_password">Aktualne hasło</label>
         <input name="current_password" id="current_password" type="password" required/>
       </div>
-      <div>
+      <div class="form-field">
         <label for="new_password">Nowe hasło</label>
         <input name="new_password" id="new_password" type="password" required/>
       </div>
-      <div>
+      <div class="form-field">
         <label for="new_password_verify">Powtórz nowe hasło</label>
         <input name="new_password_verify" id="new_password_verify" type="password" required/>
       </div>

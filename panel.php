@@ -116,6 +116,7 @@ function Message($message) {
           }
         ?>
       </div>
+      <br>
       <?php if($user['role'] === 'trainer'): ?>
         <a href="/add_contest.php">Dodaj</a>
       <?php endif; ?>
