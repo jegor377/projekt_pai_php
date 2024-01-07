@@ -120,3 +120,32 @@
   flex: 1;
   resize: none;
 }
+
+.box {
+  padding: 10px;
+}
+
+.contest {
+  padding: 5px;
+}
+
+.contest:not(:last-child) {
+  border-bottom: 1px solid var(--light-color);
+}
+
+.contest a {
+  text-decoration: none;
+  color: var(--light-color);
+  background-color: #111;
+  padding: 5px;
+  transition-duration: 0.2s;
+}
+
+.contest a:hover {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+.contest-actions {
+  margin-bottom: 5px;
+}

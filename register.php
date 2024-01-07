@@ -74,56 +74,62 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 $trainers = Db::get_all_trainers();
 $title = "Zarejestruj";
 
+$css_files = [
+  "/css/register.css"
+];
+
 require_once("templates/header.php");
 ?>
 
-<main>
-  <form id="register_form" action="/register.php" method="POST">
-    <div>
-      <label for="name">Imię i nazwisko</label>
-      <input name="name" id="name" type="name" required maxlength="256" <?= to_val($_POST['name'] ?? null) ?>/>
-    </div>
-    <div>
-      <label for="email">Email</label>
-      <input name="email" id="email" type="email" required maxlength="100" <?= to_val($_POST['email'] ?? null) ?>/>
-    </div>
-    <div>
-      <label for="password">Hasło</label>
-      <input name="password" id="password" type="password" required <?= to_val($_POST['password'] ?? null) ?>/>
-    </div>
-    <div>
-      <label for="password_verify">Powtórz hasło</label>
-      <input name="password_verify" id="password_verify" type="password" required <?= to_val($_POST['password_verify'] ?? null) ?>/>
-    </div>
+<main class="container">
+  <article class="register-container box">
+    <form id="register_form" action="/register.php" method="POST" class="form">
+      <div class="form-field">
+        <label for="name">Imię i nazwisko</label>
+        <input name="name" id="name" type="name" required maxlength="256" <?= to_val($_POST['name'] ?? null) ?>/>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input name="email" id="email" type="email" required maxlength="100" <?= to_val($_POST['email'] ?? null) ?>/>
+      </div>
+      <div class="form-field">
+        <label for="password">Hasło</label>
+        <input name="password" id="password" type="password" required <?= to_val($_POST['password'] ?? null) ?>/>
+      </div>
+      <div class="form-field">
+        <label for="password_verify">Powtórz hasło</label>
+        <input name="password_verify" id="password_verify" type="password" required <?= to_val($_POST['password_verify'] ?? null) ?>/>
+      </div>
 
-    <div>
-      <select name="role" id="role">
-        <?php if($trainers->rowCount() > 0): ?>
-          <option value="sportsman" <?= selected($_POST['role'] ?? null, 'sportsman'); ?>>Sportowiec</option>
-        <?php endif; ?>
-        <option value="trainer" <?= selected($_POST['role'] ?? null, 'trainer'); ?>>Trener</option>
-      </select>
-    </div>
-
-    <?php if($trainers->rowCount() > 0): ?>
-      <div id="trainer_id" <?= isset($_POST['role']) && $_POST['role'] === 'trainer' ? 'style="visibility: hidden;"' : '' ?>>
-        <select name="trainer_id" <?= to_val($_POST['trainer_id'] ?? null) ?>>
-          <?php foreach($trainers as $row): ?>
-            <option value="<?= $row['id'] ?>" <?= selected($_POST['trainer_id'] ?? null, $row['id']); ?>><?= $row['name'] ?></option>
-          <?php endforeach; ?>
+      <div class="form-field">
+        <select name="role" id="role">
+          <?php if($trainers->rowCount() > 0): ?>
+            <option value="sportsman" <?= selected($_POST['role'] ?? null, 'sportsman'); ?>>Sportowiec</option>
+          <?php endif; ?>
+          <option value="trainer" <?= selected($_POST['role'] ?? null, 'trainer'); ?>>Trener</option>
         </select>
       </div>
-    <?php endif; ?>
 
-    <input type="submit" value="Zarejestruj"/>
-  </form>
-  <?php
-    if(isset($error_msg)) {
-      ?>
-        <p><?= $error_msg ?></p>
-      <?php
-    }
-  ?>
+      <?php if($trainers->rowCount() > 0): ?>
+        <div class="form-field" id="trainer_id" <?= isset($_POST['role']) && $_POST['role'] === 'trainer' ? 'style="visibility: hidden;"' : '' ?>>
+          <select name="trainer_id" <?= to_val($_POST['trainer_id'] ?? null) ?>>
+            <?php foreach($trainers as $row): ?>
+              <option value="<?= $row['id'] ?>" <?= selected($_POST['trainer_id'] ?? null, $row['id']); ?>><?= $row['name'] ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+      <?php endif; ?>
+
+      <input type="submit" value="Zarejestruj"/>
+    </form>
+    <?php
+      if(isset($error_msg)) {
+        ?>
+          <p><?= $error_msg ?></p>
+        <?php
+      }
+    ?>
+  </article>
 </main>
 
 <script src="/js/register.js"></script>

@@ -39,7 +39,7 @@ require_once("templates/header.php");
 ?>
 
 <main class="container">
-  <article class="form-container">
+  <article class="form-container box">
     <h1>Zaloguj się</h1>
     <?php
       if(isset($_GET['msg'])) {

@@ -75,7 +75,7 @@ function Message($message) {
   <article class="info">
     <p><?= $_GET['msg'] ?? '' ?></p>
   </article>
-  <article class="club" id="club">
+  <article class="club box" id="club">
     <h2>Klub</h2>
     <?php if(isset($user_club) && $user_club): ?>
       <p><span>Nazwa:</span> <?= $user_club['name'] ?></p>
@@ -107,7 +107,7 @@ function Message($message) {
   </article>
 
   <?php if(isset($contests) && $contests): ?>
-    <article class="contests" id="future_contests">
+    <article class="contests box" id="future_contests">
       <h2>Nadchodzące zawody</h2>
       <div class="contests-container">
         <?php
@@ -120,7 +120,7 @@ function Message($message) {
         <a href="/add_contest.php">Dodaj</a>
       <?php endif; ?>
     </article>
-    <article class="contests" id="finished_contests">
+    <article class="contests box" id="finished_contests">
       <h2>Zakończone zawody</h2>
       <div class="contests-container">
         <?php
@@ -132,7 +132,7 @@ function Message($message) {
     </article>
   <?php endif; ?>
   <?php if($user['role'] === 'sportsman'): ?>
-    <article id="messages">
+    <article id="messages" class="box">
       <h2>Wiadomości od trenera z ostatniego tygodnia</h2>
       <div class="messages-container">
         <?php
@@ -152,7 +152,7 @@ function Message($message) {
     </article>
   <?php endif; ?>
   <?php if($user['role'] === 'trainer'): ?>
-    <article id="messages" class="trainer-messages">
+    <article id="messages" class="trainer-messages box">
       <h2>Wiadomość do wszystkich sportowców</h2>
       <form class="message-to-all" action="/panel.php" method="POST">
         <input type="hidden" name="receiver_id" value="all"/>
@@ -163,7 +163,7 @@ function Message($message) {
         <p><?= $send_msg ?></p>
       <?php endif; ?>
     </article>
-    <article id="students">
+    <article id="students" class="box">
       <h2>Sportowcy</h2>
       <div class="students-container">
         <?php foreach($students as $student): ?>
