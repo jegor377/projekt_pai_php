@@ -139,7 +139,7 @@ require_once("templates/header.php");
 
 <main class="container">
   <p class="error-msg"><?= $error_msg ?? ""; ?></p>
-  <div class="primary-conf">
+  <div class="primary-conf box">
     <h1>Edycja zawodów</h1>
     <form class="primary-conf-form" action="/edit_contest.php" method="POST">
       <input type="hidden" name="operation" value="save_primary_info"/>
@@ -159,14 +159,14 @@ require_once("templates/header.php");
       <input type="submit" value="Zapisz"/>
     </form>
   </div>
-  <div class="contest-tasks">
+  <div class="contest-tasks box">
     <h2>Zadania w zawodach</h2>
     <div class="tasks">
       <?php foreach($contest_tasks as $task): ?>
         <div class="task">
           <p><?= $task['name'] ?></p>
           <div>
-            <a href="/edit_contest.php?id=<?= $contest['id'] ?>&action=delete&task_id=<?= $task['id'] ?>">X</a>
+            <a href="/edit_contest.php?id=<?= $contest['id'] ?>&action=delete&task_id=<?= $task['id'] ?>" class="delete-btn">Usuń</a>
           </div>
         </div>
       <?php endforeach; ?>
@@ -181,7 +181,7 @@ require_once("templates/header.php");
       <input type="submit" value="Dodaj"/>
     </form>
   </div>
-  <div class="students-list">
+  <div class="students-list box">
     <h2>Wyniki sportowców</h2>
     <?php foreach($students as $student): ?>
       <form action="/edit_contest.php" method="POST">
