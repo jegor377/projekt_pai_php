@@ -22,15 +22,15 @@ $css_files = [
 require_once("templates/header.php");
 ?>
 
-<main>
+<main class="container">
   <h1>Raport z zawodów</h1>
-  <article>
+  <article class="box">
     <h3>Data i godzina</h3>
     <p><?= $contest['time'] ?></p>
     <h3>Opis</h3>
     <p><?= $contest['description'] ?></p>
   </article>
-  <article>
+  <article class="box">
     <h2>Raport</h2>
     <?php if($contest_tasks): ?>
       <table>
