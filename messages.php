@@ -33,10 +33,10 @@ require_once("templates/header.php");
   <h1>Ostatnie wiadomości do sportowca: <?= $sportsman['name'] ?></h1>
   <article class="messages">
     <?php foreach($messages as $message): ?>
-      <div>
-        <p><?= $message['sent_timestamp'] ?></p>
-        <p><?= $message['content'] ?></p>
-        <p><?= $message['read_timestamp'] === null ? 'Dostarczono' : 'Przeczytano: ' . $message['read_timestamp'] ?></p>
+      <div class="message">
+        <p class="message-timestamp"><?= $message['sent_timestamp'] ?></p>
+        <p class="message-content"><?= str_replace("\n", "<br>", $message['content']) ?></p>
+        <p class="message-state <?= $message['read_timestamp'] !== null ? "message-arrived" : "message-pending" ?>"><?= $message['read_timestamp'] === null ? 'Dostarczono' : 'Przeczytano: ' . $message['read_timestamp'] ?></p>
       </div>
     <?php endforeach; ?>
   </article>

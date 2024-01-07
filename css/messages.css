@@ -43,3 +43,28 @@ h1 {
   flex: 1;
   resize: none;
 }
+
+.message {
+  padding: 10px;
+}
+
+.message:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
+.message-timestamp {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.message-state {
+  font-size: 12px;
+}
+
+.message-arrived {
+  color: var(--green-color);
+}
+
+.message-pending {
+  color: var(--orange-color);
+}
